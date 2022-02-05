@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components'; 
 import Display from './components/Display';
 import StartButton from './components/StartButton';
 import Stage from './components/Stage';
 import { usePlayer } from './hooks/usePlayer';
 import { useStage } from './hooks/useStage';
+import { useInterval } from './hooks/useInterval';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -29,15 +30,22 @@ const TetrisDisplay = styled.div`
 
 function App() {
   const [gameOver, setGameOver] = useState(true);
+  const [dropTime, setDropTime] = useState<null | number>(null)
+
+  const gameArea = useRef<HTMLDivElement>(null);
 
   const { player } = usePlayer();
   const { stage } = useStage(player);
 
   const handleStartGame = (): void => {
-    console.log('START GAME')
+    if(gameArea.current) gameArea.current.focus();
   }
+
+  useInterval(() => {
+    drop();
+  }, dropTime)
   return (
-    <Wrapper role="button" tabIndex={0}>
+    <Wrapper role="button" tabIndex={0} ref={gameArea}>
       <TetrisWrapper>
         <TetrisDisplay>
           {gameOver ? (
