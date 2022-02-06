@@ -13,6 +13,7 @@ const GlobalStyles = createGlobalStyle`
     background-size: cover;
     background-position: center;
     height: 100vh;
+    font-family: Arial,Helvetica,sans-serif;
   }
 `;
 
